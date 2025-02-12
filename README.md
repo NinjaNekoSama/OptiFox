@@ -170,7 +170,7 @@ The light mode is designed in such a way that it is made possible for the staff 
 
 #### Dark Mode
 
-![Landing Page - Dark Mode](Code/static/img/dark mode.PNG)
+![Landing Page - Dark Mode](Code/static/img/dark_mode.PNG)
 
 There is also a toggle option to see the same in dark mode, this is kept in mind for staff that works late hours, and the colors are carefully picked in away that it wont strain their eyes out when working with optifox products : )
 
@@ -180,11 +180,11 @@ Once logged in, users are directed to the patient page, where they can see patie
 
 #### Light Mode
 
-![Patient Page - Light Mode](Code/static/img/patient page.png)
+![Patient Page - Light Mode](Code/static/img/patient_page.png)
 
 #### Dark Mode
 
-![Patient Page - Dark Mode](Code/static/img/patient page-dark.png)
+![Patient Page - Dark Mode](Code/static/img/patient_page-dark.png)
 
 The ICU cordinator ideally now can take a look at the features and make inferences to perhaps treat the patient better, although this part needs more detailed study to find the correlation between the model features and actual patient condition, this can only be refined once we finally start working with actual data.
 
@@ -199,9 +199,6 @@ Key Features:
 
 1. Developed and coded the entire proposed application.
 2. Front end displays striking visualizations and the APIs are robust both in latency and security
-3. Added in depth documentation for everything we did.
-4. Research was done and documented in appropriate location.
-5. Delivered pitch for the product and received good feedback from both product partners and the scrum masters 🙏
 
 <!-- LICENSE -->
 
