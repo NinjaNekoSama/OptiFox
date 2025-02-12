@@ -17,16 +17,14 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="built-with">Built With</a></li>
+
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#api">API</a></li>
-    <li><a href="#contributions">Contributions</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#first-release">First release</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -149,8 +147,7 @@ This repository contains a Flask API service with interactive documentation prov
 - Interactive API Documentation: Easily understand the API structure and functionality through the Swagger UI.
 - Live Testing: Send requests and view responses in real-time, making it simple to experiment with and integrate the API.
 
-_Find the detailed description of all the APIs and "how-to" guide here [API Manual](Code/static/API User Manual.pdf)_
-
+_Find the detailed description of all the APIs and "how-to" guide here [API Manual](Code/static/API_manual.pdf)
 <!-- ROAD MAP -->
 ## Project Road map
 
