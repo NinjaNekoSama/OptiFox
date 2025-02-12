@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  title: "OptiFox REST API"
+  description: "An API to fetch information for the PhysioNet DB and predict mortality and readmission rate"
+  version: "1.0.0"
+servers:
+  - url: "/api/v1"
+components:
+  schemas:
+    ReadmissionPredictionResult:
+      type: object
+      properties:
+        stay_id:
+          type: integer
+        success:
+          type: boolean
+        readmission_probability:
+          type: number
+          format: float
+          nullable: true
+        icu_intime:
+          type: string
+          format: date-time
+          nullable: true
+        last_abs_event_time:
+          type: string
+          format: date-time
+          nullable: true
+        days_between:
+          type: number
+          format: float
+          nullable: true
+        percentage:
+          type: number
+          format: float
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        feature_names:
+          type: array
+          items:
+            type: string
+    Patient:
+      type: "object"
+      required:
+        - stay_id
+        - hadm_id
+        - subject_id
+        - age
+        - first_care_unit
+        - intime
+        - outtime
+        - los_hour_int
+        - will_be_readmitted
+      properties:
+        age:
+          type: integer
+          example: 46
+        first_care_unit:
+          type: string
+          example: "Medical/Surgical Intensive Care Unit (MICU/SICU)"
+        first_name:
+          type: string
+          nullable: true
+          example: "Purushotham"
+        gender:
+          type: string
+          nullable: true
+          example: "M"
+        hadm_id:
+          type: integer
+          example: 25563031
+        intime:
+          type: string
+          format: date-time
+          example: "2110-04-11T15:52:22Z"
+        last_name:
+          type: string
+          nullable: true
+          example: "Koduri"
+        los_hour_int:
+          type: number
+          format: float
+          example: 1.338587962962963
+        main_diagnosis:
+          type: string
+          nullable: true
+          example: ""
+        outtime:
+          type: string
+          format: date-time
+          example: "2110-04-12T23:59:56Z"
+        stay_id:
+          type: integer
+          example: 31205490
+        subject_id:
+          type: integer
+          example: 10001725
+        will_be_readmitted:
+          type: boolean
+          example: false
+    TimeSeriesFeature:
+      type: object
+      properties:
+        features:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              values:
+                type: array
+                items:
+                  type: number
+                  nullable: true
+        abs_event_time:
+          type: object
+          additionalProperties:
+            type: string
+            format: date-time
+        stay_id:
+          type: integer
+          example: 30057454
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message describing the issue.
+  parameters:
+    stay_id:
+      name: "stay_id"
+      description: "The ICU Stay id of the patient"
+      in: path
+      required: true
+      schema:
+        type: integer
+
+paths:
+  /patient/{stay_id}:
+    get:
+      description: Returns the basic information of the patient based on the keyed stay_id.
+      operationId: "patient_info.read_stayid"
+      tags:
+        - "Patient information"
+      summary: "Fetch information of a patient"
+      parameters:
+        - $ref: "#/components/parameters/stay_id"
+      responses:
+        "200":
+          description: "Successfully read patient information"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        "404":
+          description: "Patient not found"
+  /patient/{stay_id}/{features}:
+    get:
+      operationId: "patient_info.get_time_series_data"
+      tags:
+        - "TimeSeriesFeature"
+      summary: Fetch time series data for a patient
+      description: Retrieves time series data for specific features of a patient based on ICU stay ID.
+      parameters:
+        - name: stay_id
+          in: path
+          required: true
+          description: ICU stay ID of the patient.
+          schema:
+            type: integer
+        - name: features
+          in: path
+          required: true
+          description: Comma-separated list of feature names to retrieve, space counts as a seperate character, refer to the time series features in 'training_config.yaml' to see the list of possible features to pull.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response with time series data.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeSeriesFeature"
+        "400":
+          description: Bad request, missing required parameter(s).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found, time series data not available for the specified stay ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /predict_readmission/{stay_id}:
+    get:
+      operationId: "readmission_rate.get_readmission_prediction"
+      tags:
+        - "ReadmissionPredictionResult"
+      summary: Get readmission prediction
+      description: Returns readmission prediction for a given ICU stay_id.
+      parameters:
+        - in: path
+          name: stay_id
+          required: true
+          schema:
+            type: string
+          description: The ICU stay ID for which to predict readmission.
+      responses:
+        "200":
+          description: A successful response with the readmission prediction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stay_id:
+                    type: integer
+                    description: The ICU stay ID.
+                    example: 123456
+                  success:
+                    type: boolean
+                    description: Whether the prediction was made successfully.
+                    example: true
+                  probability:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: The probability of readmission.
+                    example: 0.85
+                  percentage:
+                    type: number
+                    format: float
+                    nullable: true
+                    description: The probability of readmission as a percentage.
+                    example: 85.0
+                  message:
+                    type: string
+                    nullable: true
+                    description: A message providing additional information about the prediction.
+                    example: Prediction successful!
+                  feature_names:
+                    type: array
+                    items:
+                      type: string
+                    description: List of feature names used in the prediction.
+                    example: ["icu_los", "Glucose_max", "Hematocrit_max"]
+        "400":
+          description: Bad request response when the stay_id is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid stay_id provided.
+        "404":
+          description: Response when the stay_id is not found in the database.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Prediction failed as no such stay_id was found.
+        "500":
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An unexpected error occurred.
+  /current-patients/{current_time}:
+    get:
+      operationId: "patient_info.get_current_patients"
+      tags:
+        - "Fetch patients in ICU with a timestamp"
+      summary: Get current patient information
+      description: Returns information about patients currently in the ICU at the specified time.
+      parameters:
+        - in: path
+          name: current_time
+          required: true
+          schema:
+            type: string
+            example: "2157-11-20 19:18:02"
+          description: The current time in the format YYYY-MM-DD HH:MM:SS.
+      responses:
+        "200":
+          description: A JSON array of current patients in the ICU
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    patient_id:
+                      type: integer
+                      description: The ID of the patient.
+                    name:
+                      type: string
+                      description: The name of the patient.
+                    age:
+                      type: integer
+                      description: The age of the patient.
+                    icu_intime:
+                      type: string
+                      format: date-time
+                      description: The ICU admission time.
+                    icu_outtime:
+                      type: string
+                      format: date-time
+                      nullable: true
+                      description: The ICU discharge time.
+              examples:
+                example1:
+                  summary: Example response
+                  value:
+                    - patient_id: 1
+                      name: John Doe
+                      age: 45
+                      icu_intime: "2157-11-19T10:15:30"
+                      icu_outtime: null
+                    - patient_id: 2
+                      name: Jane Smith
+                      age: 30
+                      icu_intime: "2157-11-20T12:45:00"
+                      icu_outtime: "2157-11-20T18:00:00"
+        "400":
+          description: Invalid input
+        "500":
+          description: Internal server error

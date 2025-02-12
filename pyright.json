@@ -1,0 +1,25 @@
+{
+    "include": [
+      "src"
+    ],
+
+    "exclude": [
+      "**/node_modules",
+      "**/__pycache__",
+      "**/notebooks",
+      "src/experimental",
+      "src/typestubs"
+    ],
+
+    "defineConstant": {
+      "DEBUG": true
+    },
+
+    "reportMissingImports": false,
+    "reportMissingTypeStubs": false,
+
+    "pythonVersion": "3.10",
+    "pythonPlatform": "Linux",
+
+    "typeCheckingMode": "basic"
+  }

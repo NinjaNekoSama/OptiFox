@@ -1,0 +1,51 @@
+ruff~=0.4.4
+python-dotenv>=0.5.1
+pre-commit~=3.7.1
+
+# data science stuff
+numpy~=1.26.4
+matplotlib~=3.8.4
+seaborn~=0.13.2
+pandas [performance, plot, feather, excel]
+openpyxl~=3.1.2
+ydata-profiling~=4.8.3
+ipykernel~=6.29.4
+jupyter~=1.0.0
+ipympl~=0.9.4
+
+#images
+kaleido~=0.2.1
+
+kaleido~=0.2.1
+
+# ml
+scikit-learn==1.5.0
+statsmodels~=0.14.2
+lightgbm~=4.3.0
+xgboost~=2.0.3
+ipywidgets>=8.0
+antlr4-python3-runtime~=4.9.3
+
+# reproducibility
+watermark~=2.4.3
+# configuration management
+hydra-core>=1.1.0
+hydra_colorlog
+rich~=13.7.1
+
+# API
+tqdm~=4.66.4
+pytest==8.2.1
+Flask==3.0.3
+Flask-RESTful==0.3.10
+connexion[flask]==3.1.0
+connexion[uvicorn] == 3.1.0
+Flask-Cors==4.0.1
+Flask-HTTPAuth==4.8.0
+tinydb==4.8.0
+Flask-Limiter==3.7.0
+Flask-Caching==2.3.0
+prometheus_flask_exporter==0.23.1
+PyJWT==2.9.0
+#preprocessing
+holidays~=0.48

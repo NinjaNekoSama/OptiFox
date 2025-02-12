@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API User Manual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            margin: 10px 0;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .image-container {
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>API User Manual</h1>
+    <h2>Running the Flask App and Accessing Swagger UI</h2>
+    <p>This repository contains a Flask application that provides APIs for accessing patient time series data. Follow the instructions below to run the application locally and interact with the APIs using Swagger UI.</p>
+
+    <h2>OpenAPI 3.0.0 Format</h2>
+    <p>The API documentation follows the OpenAPI 3.0.0 specification, providing a structured description of endpoints, parameters, and responses.</p>
+
+    <h2>Interactive Documentation</h2>
+    <p>Use Swagger UI to test various endpoints by providing required parameters and executing requests directly from the interface.</p>
+
+    <h2>Prerequisites</h2>
+    <ol>
+        <li>Python 3.10 or above</li>
+        <li>Open the codebase in a dev container and build it using the provided config. This should be fairly simple in VS Code. You can also find further information on dev containers in the <a href="https://code.visualstudio.com/docs/devcontainers/tutorial" target="_blank">Dev Containers Tutorial</a>.</li>
+        <li>If you are somehow unable to accomplish the second prerequisite, the APIs should also work in a virtual environment after installing all the requirements listed in the project <a href="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/blob/main/requirements.txt?ref_type=heads" target="_blank">requirements.txt</a>.</li>
+    </ol>
+
+    <p>After running the application in a dev container, run <code>server.py</code> to launch the Flask server, then navigate to the URLs below depending on your interests:</p>
+
+    <h2>API Documentation</h2>
+    <p>You can access the main Flask API documentation at the following URL. This is not only a place where you are provided documentation on each API but also a playground to try out these APIs:</p>
+    <h3>Versioning</h3>
+    <ul>
+        <li><code>/api/v1</code> does not require JWT tokens or any kind of authentication.</li>
+        <li><code>/api/v2</code> is the latest API version which does need a token to access the APIs.</li>
+    </ul>
+    <p>Without authentication</p>
+    <p><a href="http://localhost:3000/api/v1/ui/" target="_blank">http://localhost:3000/api/v1/ui/</a></p>
+    <p>With authentication</p>
+    <p><a href="http://localhost:3000/api/v2/ui/" target="_blank">http://localhost:3000/api/v2/ui/</a></p>
+
+    <h3>Measure the Performance 🚀</h3>
+    <p>Although not sophisticated, we also provide Prometheus metrics, which can help understand the performance of the APIs. This requires more work, but this basic setup lays the groundwork to further optimize the performance in the future:</p>
+    <p><a href="http://localhost:3000/metrics" target="_blank">http://localhost:3000/metrics</a></p>
+
+    <h2>Usage</h2>
+    <input type="number" id="stay_id" placeholder="Enter ICU Stay ID">
+    <button onclick="fetchPatientDetails()">Get Details</button>
+
+    <div id="patient-details"></div>
+
+    <script>
+        async function fetchPatientDetails() {
+            const stayId = document.getElementById('stay_id').value;
+            if (!stayId) {
+                alert('Please enter a valid ICU Stay ID');
+                return;
+            }
+
+            try {
+                const response = await fetch(`api/v1/patient/${stayId}`);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const patient = await response.json();
+                displayPatientDetails(patient);
+            } catch (error) {
+                alert('Error fetching patient details: ' + error.message);
+            }
+        }
+
+        function displayPatientDetails(patient) {
+            const detailsDiv = document.getElementById('patient-details');
+            detailsDiv.innerHTML = `
+                <p><strong>Subject ID:</strong> ${patient.subject_id}</p>
+                <p><strong>Hospital Admission ID:</strong> ${patient.hadm_id}</p>
+                <p><strong>Stay ID:</strong> ${patient.stay_id}</p>
+                <p><strong>First Care Unit:</strong> ${patient.first_care_unit}</p>
+                <p><strong>Length of Stay (hours):</strong> ${patient.los_hour_int}</p>
+                <p><strong>Gender:</strong> ${patient.gender}</p>
+                <p><strong>Age:</strong> ${patient.age}</p>
+                <p><strong>First Name:</strong> ${patient.first_name}</p>
+                <p><strong>Last Name:</strong> ${patient.last_name}</p>
+                <p><strong>Main Diagnosis:</strong> ${patient.main_diagnosis}</p>
+                <p><strong>Will be Readmitted:</strong> ${patient.will_be_readmitted}</p>
+                <p><strong>Intime:</strong> ${patient.intime}</p>
+                <p><strong>Outtime:</strong> ${patient.outtime}</p>
+            `;
+        }
+    </script>
+    <h2>Authorization</h2>
+    <ol>
+        <li>First, you have to log in with the username <code>"nani"</code> and password <code>"optifox"</code> to generate the JWT token.</li>
+        <li>After you generate the JWT token, from the response, you need to log in with the said token to be able to use the APIs.</li>
+    </ol>
+
+    <p>Note: If you are using these APIs for your frontend, make sure to send the token as part of the request header!</p>
+
+    <h2>Endpoints</h2>
+    <p>The Swagger UI will list all available endpoints along with their descriptions and input parameters.</p>
+
+    <h2>Testing</h2>
+    <p>Use the Swagger UI to test various endpoints by providing required parameters and executing requests directly from the interface.</p>
+
+    <h2>Logging</h2>
+    <p>There is also a logging capability where all the logs are written to a log folder, which is autogenerated. This should give you further insights into the inner workings of the Flask APIs.</p>
+
+    <div class="image-container">
+        <img src="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/wikis/uploads/2f99d0e9597b0bdcda171cdec01a25df/Screenshot_2024-06-18_193806.png" alt="Authorization Screenshot">
+    </div>
+
+    <div class="image-container">
+        <img src="https://mad-srv.informatik.uni-erlangen.de/InnoLab/ss24/xitaso/-/wikis/uploads/d763e0e8b8a3bfac05e89b476cc38ca0/image.png" alt="Logging Screenshot">
+    </div>
+</body>
+</html>

@@ -1,0 +1,564 @@
+dataset:
+  datamodule:
+    _target_: src.data.mimic_iv_datamodule.MimicDataModule
+    props:
+      path: data/external/mimic-iv-2.2
+      batch_size: 16
+      shuffle: true
+      save_loaded_data: false
+      load_preprocessed_data: false
+      force_rebuild: false
+      preprocessing:
+        version: 0.2.2
+        readmission:
+          max_readmission_time: 720
+        save_processed_dfs: true
+        cut_off_time: 24
+        aggregation_functions:
+          - median
+          - std
+          - min
+          - max
+        timeseries_columns:
+          respiratory:
+            - Respiratory Rate
+            - O2 saturation pulseoxymetry
+            - Inspired O2 Fraction
+            - PEEP set
+            - Minute Volume
+            - Mean Airway Pressure
+            - Tidal Volume (observed)
+            - Peak Insp. Pressure
+            - Respiratory Rate (spontaneous)
+            - Apnea Interval
+            - Paw High
+            - O2 Flow
+            - Vti High
+            - Respiratory Rate (Total)
+            - Ventilator Mode
+            - Respiratory Rate (Set)
+            - Tidal Volume (spontaneous)
+            - PSV Level
+            - Tidal Volume (set)
+            - Expiratory Ratio
+            - Plateau Pressure
+            - Total PEEP Level
+            - Fspn High
+          routine_vital_signs:
+            - Heart Rate
+            - Non Invasive Blood Pressure systolic
+            - Non Invasive Blood Pressure diastolic
+            - Non Invasive Blood Pressure mean
+            - Arterial Blood Pressure mean
+            - Arterial Blood Pressure systolic
+            - Arterial Blood Pressure diastolic
+            - Temperature Celsius
+          neurological:
+            - GCS - Eye Opening
+            - GCS - Verbal Response
+            - GCS - Motor Response
+            - Strength R Arm
+            - Strength L Arm
+            - Strength R Leg
+            - Strength L Leg
+          treatments:
+            - Activity / Mobility (JH-HLM)
+          pain_sedation:
+            - Richmond-RAS Scale
+            - Pain Level
+            - Pain Level Response
+          labs:
+            - Glucose finger stick (range 70-100)
+            - Phosphorous
+          alarms:
+            - Heart Rate Alarm - Low
+            - Heart rate Alarm - High
+            - O2 Saturation Pulseoxymetry Alarm - Low
+            - O2 Saturation Pulseoxymetry Alarm - High
+            - Resp Alarm - High
+            - Resp Alarm - Low
+            - Minute Volume Alarm - Low
+            - Minute Volume Alarm - High
+            - Non-Invasive Blood Pressure Alarm - Low
+            - Non-Invasive Blood Pressure Alarm - High
+            - Arterial Blood Pressure Alarm - Low
+            - Arterial Blood Pressure Alarm - High
+          pulmonary:
+            - Current Dyspnea Assessment
+          general:
+            - Daily Weight
+            - Height (cm)
+          braden_fields:
+            - Braden Sensory Perception
+            - Braden Moisture
+            - Braden Activity
+            - Braden Mobility
+            - Braden Nutrition
+            - Braden Friction/Shear
+        lab_features:
+          - Glucose
+          - Potassium
+          - Sodium
+          - Chloride
+          - Hemoglobin
+          - Hematocrit
+          - Creatinine
+          - Urea Nitrogen
+          - Bicarbonate
+          - Anion Gap
+          - Magnesium
+          - Platelet Count
+          - White Blood Cells
+          - MCHC
+          - Red Blood Cells
+          - MCH
+          - MCV
+          - RDW
+          - Phosphate
+          - Calcium, Total
+          - pH
+          - PTT
+          - INR(PT)
+          - PT
+          - pO2
+          - Base Excess
+          - Calculated Total CO2
+          - pCO2
+          - RDW-SD
+          - L
+          - H
+          - I
+          - Lactate
+          - Free Calcium
+          - Bilirubin, Total
+          - Alanine Aminotransferase (ALT)
+          - Asparate Aminotransferase (AST)
+          - Alkaline Phosphatase
+          - Potassium, Whole Blood
+          - Oxygen Saturation
+          - Temperature
+          - Sodium, Whole Blood
+          - Hematocrit, Calculated
+feature_list:
+  - stay_id
+  - Arterial Blood Pressure diastolic_max
+  - Arterial Blood Pressure diastolic_mean
+  - Arterial Blood Pressure diastolic_min
+  - Arterial Blood Pressure diastolic_std
+  - Arterial Blood Pressure mean_max
+  - Arterial Blood Pressure mean_mean
+  - Arterial Blood Pressure mean_min
+  - Arterial Blood Pressure mean_std
+  - Arterial Blood Pressure systolic_max
+  - Arterial Blood Pressure systolic_mean
+  - Arterial Blood Pressure systolic_min
+  - Arterial Blood Pressure systolic_std
+  - Heart Rate_max
+  - Heart Rate_mean
+  - Heart Rate_min
+  - Heart Rate_std
+  - Non Invasive Blood Pressure diastolic_max
+  - Non Invasive Blood Pressure diastolic_mean
+  - Non Invasive Blood Pressure diastolic_min
+  - Non Invasive Blood Pressure diastolic_std
+  - Non Invasive Blood Pressure mean_max
+  - Non Invasive Blood Pressure mean_mean
+  - Non Invasive Blood Pressure mean_min
+  - Non Invasive Blood Pressure mean_std
+  - Non Invasive Blood Pressure systolic_max
+  - Non Invasive Blood Pressure systolic_mean
+  - Non Invasive Blood Pressure systolic_min
+  - Non Invasive Blood Pressure systolic_std
+  - Temperature Celsius_max
+  - Temperature Celsius_mean
+  - Temperature Celsius_min
+  - Temperature Celsius_std
+  - ABP Alarm Source
+  - ART Blood Pressure Alarm - High
+  - ART Blood Pressure Alarm - Low
+  - ART Blood Pressure Alarm Source
+  - Alarms On
+  - Arterial Blood Pressure Alarm - High
+  - Arterial Blood Pressure Alarm - Low
+  - Central Venous Pressure  Alarm - Low
+  - Central Venous Pressure Alarm - High
+  - Cerebral Perfusion Pressure Alarm - High
+  - Cerebral Perfusion Pressure Alarm - Low
+  - Heart Rate Alarm - Low
+  - Heart rate Alarm - High
+  - "Intra Cranial Pressure #2 Alarm - High"
+  - "Intra Cranial Pressure #2 Alarm - Low"
+  - Intra Cranial Pressure Alarm - High
+  - Intra Cranial Pressure Alarm - Low
+  - Minute Volume Alarm - High
+  - Minute Volume Alarm - Low
+  - NBP Alarm Source
+  - Non-Invasive Blood Pressure Alarm - High
+  - Non-Invasive Blood Pressure Alarm - Low
+  - O2 Saturation Pulseoxymetry Alarm - High
+  - O2 Saturation Pulseoxymetry Alarm - Low
+  - PAP Alarm Source
+  - PAP Alarm Source (Veletri)
+  - Parameters Checked
+  - Patient on Veletri
+  - Pulmonary Artery Pressure Alarm - High
+  - Pulmonary Artery Pressure Alarm - High (Veletri)
+  - Pulmonary Artery Pressure Alarm - Low
+  - Pulmonary Artery Pressure Alarm - Low (Veletri)
+  - Resp Alarm - High
+  - Resp Alarm - Low
+  - ST Segment Monitoring On
+  - SpO2 Desat Limit
+  - O2 Flow_max
+  - O2 Flow_mean
+  - O2 Flow_min
+  - O2 Flow_std
+  - O2 saturation pulseoxymetry_max
+  - O2 saturation pulseoxymetry_mean
+  - O2 saturation pulseoxymetry_min
+  - O2 saturation pulseoxymetry_std
+  - Respiratory Rate_max
+  - Respiratory Rate_mean
+  - Respiratory Rate_min
+  - Respiratory Rate_std
+  - daily bmi
+  - Braden Score
+  - GCS score
+  - P1 Alarm - High
+  - P1 Alarm - Low
+  - Alanine Aminotransferase (ALT)_max
+  - Alanine Aminotransferase (ALT)_median
+  - Alanine Aminotransferase (ALT)_min
+  - Alanine Aminotransferase (ALT)_std
+  - Alkaline Phosphatase_max
+  - Alkaline Phosphatase_median
+  - Alkaline Phosphatase_min
+  - Alkaline Phosphatase_std
+  - Anion Gap_max
+  - Anion Gap_median
+  - Anion Gap_min
+  - Anion Gap_std
+  - Asparate Aminotransferase (AST)_max
+  - Asparate Aminotransferase (AST)_median
+  - Asparate Aminotransferase (AST)_min
+  - Asparate Aminotransferase (AST)_std
+  - Base Excess_max
+  - Base Excess_median
+  - Base Excess_min
+  - Base Excess_std
+  - Bicarbonate_max
+  - Bicarbonate_median
+  - Bicarbonate_min
+  - Bicarbonate_std
+  - Bilirubin, Total_max
+  - Bilirubin, Total_median
+  - Bilirubin, Total_min
+  - Bilirubin, Total_std
+  - Calcium, Total_max
+  - Calcium, Total_median
+  - Calcium, Total_min
+  - Calcium, Total_std
+  - Calculated Total CO2_max
+  - Calculated Total CO2_median
+  - Calculated Total CO2_min
+  - Calculated Total CO2_std
+  - Chloride_max
+  - Chloride_median
+  - Chloride_min
+  - Chloride_std
+  - Creatinine_max
+  - Creatinine_median
+  - Creatinine_min
+  - Creatinine_std
+  - Free Calcium_max
+  - Free Calcium_median
+  - Free Calcium_min
+  - Free Calcium_std
+  - Glucose_max
+  - Glucose_median
+  - Glucose_min
+  - Glucose_std
+  - H_max
+  - H_median
+  - H_min
+  - H_std
+  - Hematocrit, Calculated_max
+  - Hematocrit, Calculated_median
+  - Hematocrit, Calculated_min
+  - Hematocrit, Calculated_std
+  - Hematocrit_max
+  - Hematocrit_median
+  - Hematocrit_min
+  - Hematocrit_std
+  - Hemoglobin_max
+  - Hemoglobin_median
+  - Hemoglobin_min
+  - Hemoglobin_std
+  - INR(PT)_max
+  - INR(PT)_median
+  - INR(PT)_min
+  - INR(PT)_std
+  - I_max
+  - I_median
+  - I_min
+  - I_std
+  - L_max
+  - L_median
+  - L_min
+  - L_std
+  - Lactate_max
+  - Lactate_median
+  - Lactate_min
+  - Lactate_std
+  - MCHC_max
+  - MCHC_median
+  - MCHC_min
+  - MCHC_std
+  - MCH_max
+  - MCH_median
+  - MCH_min
+  - MCH_std
+  - MCV_max
+  - MCV_median
+  - MCV_min
+  - MCV_std
+  - Magnesium_max
+  - Magnesium_median
+  - Magnesium_min
+  - Magnesium_std
+  - Oxygen Saturation_max
+  - Oxygen Saturation_median
+  - Oxygen Saturation_min
+  - Oxygen Saturation_std
+  - PTT_max
+  - PTT_median
+  - PTT_min
+  - PTT_std
+  - PT_max
+  - PT_median
+  - PT_min
+  - PT_std
+  - Phosphate_max
+  - Phosphate_median
+  - Phosphate_min
+  - Phosphate_std
+  - Platelet Count_max
+  - Platelet Count_median
+  - Platelet Count_min
+  - Platelet Count_std
+  - Potassium, Whole Blood_max
+  - Potassium, Whole Blood_median
+  - Potassium, Whole Blood_min
+  - Potassium, Whole Blood_std
+  - Potassium_max
+  - Potassium_median
+  - Potassium_min
+  - Potassium_std
+  - RDW-SD_max
+  - RDW-SD_median
+  - RDW-SD_min
+  - RDW-SD_std
+  - RDW_max
+  - RDW_median
+  - RDW_min
+  - RDW_std
+  - Red Blood Cells_max
+  - Red Blood Cells_median
+  - Red Blood Cells_min
+  - Red Blood Cells_std
+  - Sodium, Whole Blood_max
+  - Sodium, Whole Blood_median
+  - Sodium, Whole Blood_min
+  - Sodium, Whole Blood_std
+  - Sodium_max
+  - Sodium_median
+  - Sodium_min
+  - Sodium_std
+  - Temperature_max
+  - Temperature_median
+  - Temperature_min
+  - Temperature_std
+  - Urea Nitrogen_max
+  - Urea Nitrogen_median
+  - Urea Nitrogen_min
+  - Urea Nitrogen_std
+  - White Blood Cells_max
+  - White Blood Cells_median
+  - White Blood Cells_min
+  - White Blood Cells_std
+  - pCO2_max
+  - pCO2_median
+  - pCO2_min
+  - pCO2_std
+  - pH_max
+  - pH_median
+  - pH_min
+  - pH_std
+  - pO2_max
+  - pO2_median
+  - pO2_min
+  - pO2_std
+  - urine_last_1d
+  - anchor_age
+  - is_planed
+  - is_surg
+  - aids
+  - neoplasie
+  - metastatic_cancer
+  - PEEP set_max
+  - Vti High_mean
+  - Fspn High_std
+  - Pain Level Response_max
+  - Tidal Volume (set)_max
+  - Tidal Volume (observed)_std
+  - Tidal Volume (spontaneous)_mean
+  - Strength R Leg_median
+  - Current Dyspnea Assessment_std
+  - Peak Insp. Pressure_min
+  - Paw High_min
+  - Tidal Volume (set)_mean
+  - Strength R Leg_max
+  - Respiratory Rate (spontaneous)_min
+  - Expiratory Ratio_min
+  - Minute Volume_mean
+  - Current Dyspnea Assessment_median
+  - Total PEEP Level_std
+  - Paw High_max
+  - Richmond-RAS Scale_std
+  - Strength L Leg_max
+  - Expiratory Ratio_max
+  - Respiratory Rate (Total)_std
+  - Vti High_max
+  - Mean Airway Pressure_max
+  - Paw High_std
+  - Tidal Volume (set)_std
+  - Paw High_mean
+  - Activity / Mobility (JH-HLM)_median
+  - Tidal Volume (spontaneous)_max
+  - Mean Airway Pressure_std
+  - Plateau Pressure_std
+  - Respiratory Rate (Set)_min
+  - Apnea Interval_max
+  - Glucose finger stick (range 70-100)_max
+  - Tidal Volume (spontaneous)_min
+  - Strength L Leg_std
+  - Inspired O2 Fraction_min
+  - Activity / Mobility (JH-HLM)_std
+  - Pain Level_max
+  - Strength R Leg_min
+  - Strength R Arm_std
+  - Mean Airway Pressure_min
+  - Respiratory Rate (spontaneous)_mean
+  - Minute Volume_min
+  - Tidal Volume (set)_min
+  - Glucose finger stick (range 70-100)_median
+  - Richmond-RAS Scale_median
+  - Inspired O2 Fraction_mean
+  - Strength L Arm_max
+  - Mean Airway Pressure_mean
+  - Respiratory Rate (Total)_min
+  - PEEP set_std
+  - Respiratory Rate (spontaneous)_max
+  - Pain Level_median
+  - Inspired O2 Fraction_max
+  - Peak Insp. Pressure_max
+  - Respiratory Rate (Total)_max
+  - PEEP set_min
+  - Strength R Arm_median
+  - Ventilator Mode_mean
+  - Strength R Arm_min
+  - Strength R Leg_std
+  - Ventilator Mode_std
+  - Pain Level_min
+  - Apnea Interval_min
+  - Total PEEP Level_max
+  - Expiratory Ratio_std
+  - Pain Level Response_min
+  - Respiratory Rate (Set)_std
+  - Vti High_std
+  - Tidal Volume (observed)_min
+  - Plateau Pressure_max
+  - Pain Level_std
+  - PSV Level_min
+  - Plateau Pressure_mean
+  - Glucose finger stick (range 70-100)_std
+  - Fspn High_max
+  - Plateau Pressure_min
+  - Tidal Volume (observed)_mean
+  - Total PEEP Level_mean
+  - Strength L Arm_median
+  - Richmond-RAS Scale_min
+  - Tidal Volume (observed)_max
+  - Apnea Interval_std
+  - Phosphorous_max
+  - Ventilator Mode_min
+  - Apnea Interval_mean
+  - Tidal Volume (spontaneous)_std
+  - PEEP set_mean
+  - Activity / Mobility (JH-HLM)_min
+  - Strength L Arm_min
+  - Strength L Leg_min
+  - PSV Level_std
+  - Strength L Leg_median
+  - Phosphorous_median
+  - Inspired O2 Fraction_std
+  - Pain Level Response_median
+  - Strength R Arm_max
+  - PSV Level_mean
+  - Expiratory Ratio_mean
+  - Peak Insp. Pressure_mean
+  - Phosphorous_min
+  - Ventilator Mode_max
+  - PSV Level_max
+  - Minute Volume_max
+  - Respiratory Rate (Total)_mean
+  - Fspn High_min
+  - Minute Volume_std
+  - Peak Insp. Pressure_std
+  - Strength L Arm_std
+  - Respiratory Rate (Set)_mean
+  - Activity / Mobility (JH-HLM)_max
+  - Phosphorous_std
+  - Respiratory Rate (spontaneous)_std
+  - Vti High_min
+  - Current Dyspnea Assessment_min
+  - Respiratory Rate (Set)_max
+  - Fspn High_mean
+  - Glucose finger stick (range 70-100)_min
+  - Current Dyspnea Assessment_max
+  - Pain Level Response_std
+  - Richmond-RAS Scale_max
+  - Total PEEP Level_min
+model:
+  _target_: src.models.model.IcuLinRegRegressor
+  rfe_props:
+    n_features_to_select: 5
+    step: 1
+evaluation:
+  metrics:
+    - explained_variance
+    - mean_absolute_error
+    - mean_squared_log_error
+    - mean_squared_error
+    - root_mean_squared_error
+    - max_error
+    - mean_absolute_percentage_error
+    - r2_score
+    - kappa_score
+  round_digits: 2
+name: tabular
+data_type: timeseries
+target: icu_los
+seed: 123
+lr: 0.0001
+epochs: 100
+val_split: 0.2
+test_split: 0.2
+split: stay_id
+cv:
+  enabled: false
+  folds: 5
+  scoring: neg_mean_squared_error
+  n_jobs: -1
+extras:
+  print_config: false
